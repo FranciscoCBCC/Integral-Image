@@ -3,45 +3,75 @@
 
 //Adaptado de https://github.com/ckreisl/summed-area-table/blob/master/main.cpp, acesso em 12/06/2018
 
+#include <stdio.h>
+#include <stdlib.h>
+
+//ESTE CÓDIGO CALCULA A IMAGEM INTEGRAL UTILIZANDO MATRIZ E VETOR
+
 int main(){
 	
-	int imagemOriginal[4][4] = {{5,2,5,2},
-								{3,6,3,6},
-								{5,2,5,2},
-								{3,6,3,6}};
-	int integralImage[4][4], valor;
+	int matriz[2][2]={{2,1},{5,4}};
+	int matrizIntegral[2][2]={{0,0},{0,0}};
+	int vetor[4]={2,1,5,4};
+	int vetorIntegral[4]={0,0,0,0};
+	int y=0,x=0, valorMatriz=0, valorVetor=0;
 	
-	integralImage[0][0] = imagemOriginal[0][0];
-	for(int yLinha = 0; yLinha < 4; yLinha++){
-		for(int xColuna=0; xColuna<4; xColuna++){
-			valor = imagemOriginal[xColuna][yLinha];
-			if(yLinha>0)
-				valor += integralImage[xColuna][yLinha-1];
-			if(xColuna>0)
-				valor += integralImage[xColuna-1][yLinha];
-			if(xColuna>0 && yLinha>0)
-				valor -= integralImage[xColuna-1][yLinha-1];
-			integralImage[xColuna][yLinha] = valor;
+	for(y = 0; y < 2; y++){
+		for(x = 0; x < 2; x++){
+			valorMatriz = matriz[x][y];
+			valorVetor = vetor[y*2+x];
+			if(y>0){
+				valorMatriz += matrizIntegral[x][y-1];
+				valorVetor += vetorIntegral[(y-1)*2+x];
+			}
+			if(x>0){
+				valorMatriz += matrizIntegral[x-1][y];
+				valorVetor += vetorIntegral[y*2+x-1];
+			}
+			if(x>0 && y>0){
+				valorMatriz -= matrizIntegral[x-1][y-1];
+				valorVetor -= vetorIntegral[(y-1)*2+x-1];
+			}
+			matrizIntegral[x][y] = valorMatriz; 
+			vetorIntegral[y*2+x] = valorVetor;
 		}
 	}
 	
-	//Imagem Original
-	printf("Imagem Original\n\n");
-	for(int yLinha = 0; yLinha < 4; yLinha++){
-		for(int xColuna=0; xColuna<4; xColuna++){
-			printf("  %d  ",imagemOriginal[yLinha][xColuna]);
+	//Exibe a matriz original
+	for(y=0; y<2; y++){
+		for(x=0; x<2; x++){
+			printf(" %d ", matriz[y][x]);
 		}
 		printf("\n");
 	}
 	
-	//Integral Image
-	printf("\nIntegral Image\n\n");
-	for(int yLinha = 0; yLinha < 4; yLinha++){
-		for(int xColuna=0; xColuna<4; xColuna++){
-			printf("  %d  ",integralImage[yLinha][xColuna]);
+	printf("\n");
+	//Exibe a matriz integral
+	for(y=0; y<2; y++){
+		for(x=0; x<2; x++){
+			printf(" %d ", matrizIntegral[y][x]);
+		}
+		printf("\n");
+	}
+	
+	printf("\n");
+	//Exibe o vetor original
+	for(y=0; y<2; y++){
+		for(x=0; x<2; x++){
+			printf(" %d ", vetor[y*2+x]);
+		}
+		printf("\n");
+	}
+	
+	printf("\n");
+	//Exibe o vetor integral
+	for(y=0; y<2; y++){
+		for(x=0; x<2; x++){
+			printf(" %d ", vetorIntegral[y*2+x]);
 		}
 		printf("\n");
 	}
 	
 	return 0;
 }
+
